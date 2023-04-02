@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+  <script src="https://use.fontawesome.com/51462c48e7.js"></script>
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/icofont.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/themify.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/flag-icon.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/feather-icon.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/scrollbar.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/animate.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/date-picker.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/photoswipe.css}">
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.1.2/css/all.css">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/bootstrap.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+  <link id="color" rel="stylesheet" th:href="@{/assets/css/color-1.css}" media="screen">
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/responsive.css}">
+  <title>Dashboard</title>
+</head>
+<body>
+<!-- Loader starts-->
+<div class="loader-wrapper">
+  <div class="loader">
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-ball"></div>
+  </div>
+</div>
+<!-- Loader ends-->
+<!-- tap on top starts-->
+<div class="tap-top"><i data-feather="chevrons-up"></i></div>
+<!-- tap on tap ends-->
+<!-- page-wrapper Start-->
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+  <!-- Page Header Start-->
+  <div th:replace="header/nav::navatas"></div>
+  <!-- Page Header Ends                              -->
+  <!-- Page Body Start-->
+  <div class="page-body-wrapper">
+    <!-- Page Sidebar Start-->
+  <div th:replace="sidebar/sidebar::sidebarkiri"></div>
+    <!-- Page Sidebar Ends-->
+    <div class="page-body">
+      <div class="container-fluid">
+        <div class="page-title">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <h3>Dashboard</h3>
+            </div>
+            <!-- <div class="col-12 col-sm-6">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"> <a class="home-item" href="index.html"><i data-feather="home"></i></a></li>
+                <li class="breadcrumb-item"> Dashboard</li>
+                <li class="breadcrumb-item active"> Default</li>
+              </ol>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <!-- Container-fluid starts-->
+      <div class="container-fluid default-dash">
+        <div class="row">
+          <div class="">
+            <div class="card profile-greeting">
+              <div class="card-body">
+                <div class="media">
+                  <div class="media-body">
+                    <div class="greeting-user">
+                      <h1>Selamat Datang, <span th:text="${NMLZ}"></span>!</h1>
+                      <p>Sekarang anda dapat dengan mudah melakukan pencatatan laundry dengan website kami !</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="cartoon-img"><img th:src="@{/assets/images/pic.png}"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Announcement -->
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-xl-6">
+          <div class="card card-absolute">
+            <div class="card-header bg-primary">
+              <h5 class="text-white">Monthly Profit <i class="fa-solid fa-megaphone"></i></h5>
+            </div>
+            <div class="card-body">
+              <h3>
+                <th:block th:text="${currentProfit}"></th:block>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <!-- Settings -->
+        <div class="col-sm-12 col-md-6 col-xl-6">
+          <div class="card card-absolute">
+            <div class="card-header bg-secondary">
+              <h5 class="text-white">Profil <i class="fa-solid fa-user"></i></h5>
+            </div>
+            <div class="card-body">
+              <p></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Recent Entries -->
+<!--      <div class="card">-->
+<!--        <div class="card-header pb-0">-->
+<!--          <h5>Login History</h5>-->
+<!--        </div>-->
+<!--        <div class="order-history table-responsive">-->
+<!--          <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">-->
+<!--            <table class="table table-bordernone display dataTable no-footer" id="basic-1" role="grid" aria-describedby="basic-1_info">-->
+<!--              <thead>-->
+<!--              <tr role="row">-->
+<!--                <th>ID</th>-->
+<!--                <th>Nama Pelanggan</th>-->
+<!--                <th>Layanan</th>-->
+<!--                <th>Paket</th>-->
+<!--                <th>Berat</th>-->
+<!--                <th>Harga Per Kilo</th>-->
+<!--                <th>Total Harga</th>-->
+<!--                <th>Cara Bayar</th>-->
+<!--                <th cols>Actions</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr role="row" class="odd">-->
+<!--                <td>-->
+
+<!--                </td>-->
+<!--                <td class="sorting_1">-->
+
+<!--                </td>-->
+<!--                <td>-->
+
+<!--                </td>-->
+<!--                <td class="sorting_1">-->
+
+<!--                </td>-->
+<!--                <td>-->
+
+<!--                </td>-->
+<!--                <td class="sorting_1">-->
+
+<!--                </td>-->
+<!--                <td>-->
+
+<!--                </td>-->
+<!--                <td class="sorting_1">-->
+
+<!--                </td>-->
+<!--                <td>-->
+
+<!--                </td>-->
+<!--                <td class="sorting_1">-->
+<!--                  <a href="/my_order/update/" class="btn btn-primary">⟳</a>-->
+<!--                </td>-->
+<!--              </tr>-->
+
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; Container-fluid Ends&ndash;&gt;-->
+<!--    </div>-->
+    <!-- footer start-->
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12 footer-copyright text-center">
+            <p class="mb-0">Copyright 2023 © Manajemen Laundry</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+</div>
+<!-- latest jquery-->
+<script th:src="@{/assets/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/icons/feather-icon/feather.min.js}"></script>
+<script th:src="@{/assets/js/icons/feather-icon/feather-icon.js}"></script>
+<script th:src="@{/assets/js/scrollbar/simplebar.js}"></script>
+<script th:src="@{/assets/js/scrollbar/custom.js}"></script>
+<script th:src="@{/assets/js/config.js}"></script>
+<script th:src="@{/assets/js/sidebar-menu.js}"></script>
+<script th:src="@{/assets/js/chart/knob/knob.min.js}"></script>
+<script th:src="@{/assets/js/chart/knob/knob-chart.js}"></script>
+<script th:src="@{/assets/js/chart/apex-chart/apex-chart.js}"></script>
+<script th:src="@{/assets/js/chart/apex-chart/stock-prices.js}"></script>
+<script th:src="@{/assets/js/notify/bootstrap-notify.min.js}"></script>
+<script th:src="@{/assets/js/dashboard/default.js}"></script>
+<script th:src="@{/assets/js/datepicker/date-picker/datepicker.js}"></script>
+<script th:src="@{/assets/js/datepicker/date-picker/datepicker.en.js}"></script>
+<script th:src="@{/assets/js/datepicker/date-picker/datepicker.custom.js}"></script>
+<script th:src="@{/assets/js/photoswipe/photoswipe.min.js}"></script>
+<script th:src="@{/assets/js/photoswipe/photoswipe-ui-default.min.js}"></script>
+<script th:src="@{/assets/js/photoswipe/photoswipe.js}"></script>
+<script th:src="@{/assets/js/typeahead/handlebars.js}"></script>
+<script th:src="@{/assets/js/typeahead/typeahead.bundle.js}"></script>
+<script th:src="@{/assets/js/typeahead/typeahead.custom.js}"></script>
+<script th:src="@{/assets/js/typeahead-search/handlebars.js}"></script>
+<script th:src="@{/assets/js/typeahead-search/typeahead-custom.js}"></script>
+<script th:src="@{/assets/js/height-equal.js}"></script>
+<script th:src="@{/assets/js/script.js}"></script>
+<script src="cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

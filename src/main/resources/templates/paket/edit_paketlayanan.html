@@ -1,0 +1,86 @@
+<form th:action="@{/api/mgmnt/v1/paketlayanan/edit/{id}(id=${paketLayanan.idListHarga})}" th:object = "${paketLayanan}" method="POST" id="ubahPaketlayanan"><!--	ID FORM TIDAK BOLEH SAMA DENGAN ID MODALS DI FRAGMENT -->
+	<input type="hidden" value="c3adcc89a32a5aabd8672d7ede72946dbbb758305d1470778ee99ac0e695b8e6" /><!-- form generate id security of front end -->
+
+	<div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
+		<p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
+	</div>
+	<div class ="form-group">
+		<label> Nama Paket Layanan </label>
+		<input
+				type = "text"
+				name = "berat"
+				th:field = "*{namaPaket}"
+				th:value = "*{namaPaket}"
+				class = "form-control"
+				placeholder="Masukkan Berat"
+		/>
+		<ul>
+			<li th:each="err : ${#fields.errors('namaPaket')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+
+	<div class ="form-group">
+		<label> Harga Per Kilo </label>
+		<input
+				type = "text"
+				name = "berat"
+				th:field = "*{hargaPerKilo}"
+				th:value = "*{hargaPerKilo}"
+				class = "form-control"
+				placeholder="Masukkan Berat"
+		/>
+		<ul>
+			<li th:each="err : ${#fields.errors('hargaPerKilo')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+	<div class ="form-group">
+		<label> Tipe Paket Layanan </label>
+		<select th:field="*{tipeLayanan}" class="form-control">
+			<option value="Reguler">Reguler</option>
+			<option value="Premium">Premium</option>
+			<option value="Express">Express</option>
+		</select>
+		<ul>
+			<li th:each="err : ${#fields.errors('tipeLayanan')}" th:text="${err}" class="error" />
+		</ul>
+	</div>
+	<div class = "modal-footer">
+		<button type="submit" class = "btn btn-primary">
+			Submit
+		</button>
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	</div>
+</form>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+    $("#ubahPaketlayanan").submit(function(event) {
+          event.preventDefault(); //prevent default action
+          let post_url = $(this).attr("action"); //get form action url
+          let request_method = $(this).attr("method"); //get form GET/POST method
+          let form_data = $(this).serialize(); //Encode form elements for submission
+          $.ajax({
+              url: post_url,
+              type: request_method,
+              data: form_data
+            }).done(function(response) { //
+            let pattern = /c3adcc89a32a5aabd8672d7ede72946dbbb758305d1470778ee99ac0e695b8e6/i;
+			let result = response.match(pattern);
+            if(result)
+            {
+				$("#server-results").html(response);
+            }
+            else
+            {
+				$('#editPaketlayanan').modal('hide');
+				confirm("DATA BERHASIL DISIMPAN");
+				location.reload();
+			}
+
+            });
+        });
+
+/*]]>*/
+</script>
+

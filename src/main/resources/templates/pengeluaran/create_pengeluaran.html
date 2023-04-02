@@ -1,0 +1,72 @@
+<form th:action="@{/api/mgmnt/v1/pengeluaran/new}" th:object = "${pengeluaran}" method="POST" id="buatPengeluaran"><!--	ID FORM TIDAK BOLEH SAMA DENGAN ID MODALS DI FRAGMENT -->
+  <input type="hidden" value="427d39e98d748ad4e925cfedc738c293" /><!-- form generate id security of front end -->
+
+  <div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
+    <p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
+  </div>
+  <div class ="form-group">
+    <label> Nama Pengeluaran </label>
+    <input
+            type = "text"
+            name = "namaPengeluaran"
+            th:field = "*{namaPengeluaran}"
+            class = "form-control"
+            placeholder="Masukkan Nama Pengeluaran"
+    />
+    <ul>
+      <li th:each="err : ${#fields.errors('namaPengeluaran')}" th:text="${err}" class="error" />
+    </ul>
+  </div>
+
+  <div class ="form-group">
+    <label> Biaya Pengeluaran </label>
+    <input
+            type = "text"
+            name = "biayaPengeluaran"
+            th:field = "*{biaya}"
+            class = "form-control"
+            placeholder="Masukkan Jumlah Biaya"
+    />
+    <ul>
+      <li th:each="err : ${#fields.errors('biaya')}" th:text="${err}" class="error" />
+    </ul>
+  </div>
+  <div class = "modal-footer">
+    <button type="submit" class = "btn btn-primary">
+      Submit
+    </button>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+  </div>
+</form>
+
+<script th:inline="javascript">
+  /*<![CDATA[*/
+
+  $("#buatPengeluaran").submit(function(event) {
+    event.preventDefault(); //prevent default action
+    let post_url = $(this).attr("action"); //get form action url
+    let request_method = $(this).attr("method"); //get form GET/POST method
+    let form_data = $(this).serialize(); //Encode form elements for submission
+    $.ajax({
+      url: post_url,
+      type: request_method,
+      data: form_data
+    }).done(function(response) { //
+      let pattern = /427d39e98d748ad4e925cfedc738c293/i;
+      let result = response.match(pattern);
+      if(result)
+      {
+        $("#server-results").html(response);
+      }
+      else
+      {
+        $('#addPengeluaran').modal('hide');
+        confirm("DATA BERHASIL DISIMPAN");
+        location.reload();
+      }
+
+    });
+  });
+
+  /*]]>*/
+</script>

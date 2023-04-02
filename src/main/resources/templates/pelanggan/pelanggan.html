@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scalne=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+    <script src="https://use.fontawesome.com/51462c48e7.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/icofont.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/themify.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/flag-icon.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/feather-icon.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/scrollbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/animate.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/date-picker.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/photoswipe.css}">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.1.2/css/all.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/vendors/bootstrap.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+    <link id="color" rel="stylesheet" th:href="@{/assets/css/color-1.css}" media="screen">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/responsive.css}">
+    <title>Dashboard</title>
+    <script th:src="@{/js/modalz.js}"></script>
+    <script th:src="@{/js/action.js}"></script>
+</head>
+<body>
+<!-- Loader starts-->
+<div class="loader-wrapper">
+    <div class="loader">
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-bar"></div>
+        <div class="loader-ball"></div>
+    </div>
+</div>
+<!-- Loader ends-->
+<!-- tap on top starts-->
+<div class="tap-top"><i data-feather="chevrons-up"></i></div>
+<!-- tap on tap ends-->
+<!-- page-wrapper Start-->
+<div class="page-wrapper compact-wrapper" id="pageWrapper">
+    <!-- Page Header Start-->
+    <div th:replace="header/nav::navatas"></div>
+    <!-- Page Header Ends                              -->
+    <!-- Page Body Start-->
+    <div class="page-body-wrapper">
+        <!-- Page Sidebar Start-->
+        <div th:replace="sidebar/sidebar::sidebarkiri"></div>
+        <!-- Page Sidebar Ends-->
+        <div class="page-body">
+            <div class="container-fluid">
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div th:if="${message != null}" style="background-color: #c5fab9;border-color: darkgreen;color: darkgreen;border-radius: 10px;margin-top:10px" class="alert alert-success alert-dismissible fade show text-center message"
+                             th:onclick="document.querySelector('.close').click()"
+                             role="alert">
+                            [[${message}]]
+                            <a type="button" class="close btn-sm p-0" data-dismiss="alert" aria-label="Close" style="float: right;color: #68a859">
+                                <i class="icofont-ui-close" style="margin-top: 10px"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Entries -->
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h5>List Pelanggan</h5>
+                </div>
+                <div class="col-md-11" style="display: flex; justify-content: end;margin-left: 75px;margin-bottom: 10px">
+                    <button type="button"
+                            th:data-title="'Add Pelanggan'" onclick="funcHandler(event)"
+                            th:data-url="'/api/mgmnt/v1/pelanggan/new'"
+                            class="btn btn-primary" data-toggle="modal" data-target="#addPelanggan">
+                        ADD PELANGGAN
+                    </button>
+                </div>
+                <form th:action="@{/api/mgmnt/v1/pelanggan/fbpsb/{page}/{sort}/{sortBy}?columnFirst={colFirst}
+					&valueFirst={valFirst}
+					 (
+					page=0,
+					sort='asc',
+					sortBy=${sortBy},
+					colFirst=${columnFirst},
+					valFirst=${valueFirst})}"
+                      id="itemSizeForm" style="margin-bottom: 30px"><!--				ID INI DIISI UNTUK FORM DI SELECT OPTIONS COMPONENT -->
+                    <div class="row container">
+                        <div class="col-sm-3">
+                            <select name="columnFirst" th:value="${columnFirst}"
+                                    id="columnFirst" class="form-control">
+                                <option value="" selected="selected" disabled hidden="hidden">---pilih kolom---</option>
+                                <option
+                                        th:each="childArrays:${data.get('searchParam')}"
+                                        th:value="${childArrays.key}"
+                                        th:text="${childArrays.value}"
+                                        th:selected="${childArrays.key == columnFirst}"></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <select form="itemSizeForm" name="sizeComponent" th:value="${data.get('numberOfElements')}"
+                                    onchange="changePageSize()" class="form-control"
+                                    id="sizeComponent">
+                                <option value="" disabled>Item per page...</option>
+                                <option th:each="s : ${ {5, 10, 15,20,25,30} }"
+                                        th:value="${s}"
+                                        th:text="${s}"
+                                        th:selected="${s == data.get('numberOfElements')}"></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input id="valueFirst" type="text" name="valueFirst" th:value="${valueFirst}"
+                                       class="form-control"
+                                       placeholder="Masukkan Data">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form><!-- end of form-->
+
+                <th:block th:if="${#lists.size(data.get('content')) != 0}"/>
+                <div class="order-history table-responsive">
+                    <div id="basic-1_wrapper" class="dataTables_wrapper no-footer">
+                        <table class="table table-bordernone display dataTable no-footer" id="basic-1" role="grid" aria-describedby="basic-1_info">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>
+                                    <a class="" th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+																			+ ${currentPage}
+																			+ '/'
+																			+ (${#strings.equals(data.get('sort'),'asc')} ? 'desc' : 'asc')
+																			+ '/id?columnFirst='
+																			+ ${columnFirst}
+																			+ '&valueFirst='
+																			+ ${valueFirst}
+																			+ '&sizeComponent='
+																			+ ${sizeComponent}
+																			}"/>
+                                    No</a>
+                                </th>
+                                <th style="text-align: center">
+                                    <a class="" th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+																			+ ${currentPage}
+																			+ '/'
+																			+ (${#strings.equals(data.get('sort'),'asc')} ? 'desc' : 'asc')
+																			+ '/id?columnFirst='
+																			+ ${columnFirst}
+																			+ '&valueFirst='
+																			+ ${valueFirst}
+																			+ '&sizeComponent='
+																			+ ${sizeComponent}
+																			}"/>
+                                    ID</a>
+                                </th>
+                                <th style="text-align: center">
+                                    <a class="" th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+																			+ ${currentPage}
+																			+ '/'
+																			+ (${#strings.equals(data.get('sort'),'asc')} ? 'desc' : 'asc')
+																			+ '/nama?columnFirst='
+																			+ ${columnFirst}
+																			+ '&valueFirst='
+																			+ ${valueFirst}
+																			+ '&sizeComponent='
+																			+ ${sizeComponent}
+																			}"/>
+                                    Nama Lengkap</a>
+                                </th>
+                                <th style="text-align: center">
+                                    <a class="" th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+																			+ ${currentPage}
+																			+ '/'
+																			+ (${#strings.equals(data.get('sort'),'asc')} ? 'desc' : 'asc')
+																			+ '/alamat?columnFirst='
+																			+ ${columnFirst}
+																			+ '&valueFirst='
+																			+ ${valueFirst}
+																			+ '&sizeComponent='
+																			+ ${sizeComponent}
+																			}"/>
+                                    Alamat Lengkap</a>
+                                </th>
+                                <th style="text-align: center">
+                                    <a class="" th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+																			+ ${currentPage}
+																			+ '/'
+																			+ (${#strings.equals(data.get('sort'),'asc')} ? 'desc' : 'asc')
+																			+ '/no?columnFirst='
+																			+ ${columnFirst}
+																			+ '&valueFirst='
+																			+ ${valueFirst}
+																			+ '&sizeComponent='
+																			+ ${sizeComponent}
+																			}"/>
+                                    No Handphone</a>
+                                </th>
+                                <th colspan="2" style="text-align: center"> Actions </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="childEntity,thu : ${data.get('content')}">
+                                <td style="text-align: center" th:text="${thu.index+1}"></td>
+                                <td style="text-align: center" th:text="${childEntity.idPelanggan}"></td>
+                                <td style="text-align: center" th:text="${childEntity.namaLengkap}"></td>
+                                <td style="text-align: center" th:text="${childEntity.alamatLengkap}"></td>
+                                <td style="text-align: center" th:text="${childEntity.noHandphone}"></td>
+                                <td style="text-align: center">
+                                    <button type="button"
+                                            th:data-title="'Edit Pelanggan'" onclick="funcHandler(event)"
+                                            th:data-url="'/api/mgmnt/v1/pelanggan/edit/'+${childEntity.idPelanggan}"
+                                            class="btn btn-primary" data-toggle="modal" data-target="#editPelanggan">
+                                        Edit
+                                    </button>
+                                </td>
+                                <td style="text-align: center">
+                                    <a th:href="@{/api/mgmnt/v1/pelanggan/delete/{id} (id=${childEntity.idPelanggan})}" class="btn btn-danger">Delete</a><!-- UNTUK DELETE DENGAN METHOD GET -->
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div th:if = "${data.get('totalPages') > 1}">
+                            <div class = "row">
+                                <div class = "col-sm-2">
+                                    Total Rows: [[${data.get('totalItems')}]]
+                                </div>
+                                <div class = "col-sm-4">
+                                    <a th:if="${currentPage > 1}"
+                                       th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+						   + '0/'
+							+ ${data.get('sort')}
+							+ '/'
+							+ ${sortBy}
+							+ '?columnFirst='
+							+ ${columnFirst}
+							+ '&valueFirst='
+							+ ${valueFirst}
+							+ '&sizeComponent='
+							+ ${sizeComponent}
+						   }">First</a>
+                                    <!--						<span th:unless="${currentPage < data.get('totalPages')}">First</span>-->
+                                    <span th:unless="${currentPage > 1}">First</span>
+                                    <a th:if="${currentPage > 1}"
+                                       th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+							+ ${currentPage - 1}
+							+ '/'
+							+ ${data.get('sort')}
+							+ '/'
+							+ ${sortBy}
+							+ '?columnFirst='
+							+ ${columnFirst}
+							+ '&valueFirst='
+							+ ${valueFirst}
+							+ '&sizeComponent='
+							+ ${sizeComponent}
+							}">|| Prev</a>
+                                    <!--						<span th:unless="${currentPage < data.get('totalPages')}">|| Prev</span>-->
+                                    <span th:unless="${currentPage > 1}">|| Prev</span>
+                                </div>
+                                <div class = "col-sm-2">
+						<span th:each="i: ${#numbers.sequence(1, data.get('totalPages'))}">
+							<a th:if="${currentPage != i}" th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+							+ ${i}
+							+ '/'
+							+ ${data.get('sort')}
+							+ '/'
+							+ ${sortBy}
+							+ '?columnFirst='
+							+ ${columnFirst}
+							+ '&valueFirst='
+							+ ${valueFirst}
+							+ '&sizeComponent='
+							+ ${sizeComponent}
+							}">[[${i}]]</a>
+								<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
+						</span>
+                                </div>
+                                <div class = "col-sm-4">
+                                    <a th:if="${currentPage < data.get('totalPages')}"
+                                       th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+						   + ${currentPage + 1}
+						   + '/'
+							+ ${data.get('sort')}
+							+ '/'
+							+ ${sortBy}
+							+ '?columnFirst='
+							+ ${columnFirst}
+							+ '&valueFirst='
+							+ ${valueFirst}
+							+ '&sizeComponent='
+							+ ${sizeComponent}
+						   }">Next</a>
+                                    <span th:unless="${currentPage < data.get('totalPages')}">Next</span>
+                                    <a th:if="${currentPage < data.get('totalPages')}"
+                                       th:href="@{'/api/mgmnt/v1/pelanggan/fbpsb/'
+							+ ${data.get('totalPages')}
+							+ '/'
+							+ ${data.get('sort')}
+							+ '/'
+							+ ${sortBy}
+							+ '?columnFirst='
+							+ ${columnFirst}
+							+ '&valueFirst='
+							+ ${valueFirst}
+							+ '&sizeComponent='
+							+ ${sizeComponent}
+							}">|| Last</a>
+                                    <span th:unless="${currentPage < data.get('totalPages')}">|| Last</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Container-fluid Ends-->
+        </div>
+        <!-- footer start-->
+        <footer class="footer ml-0">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12 footer-copyright text-center">
+                        <p class="mb-0">Copyright 2023 © Manajemen Laundry</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+</div>
+
+<th:block th:replace="modals :: modalz('addPelanggan')">modal</th:block>
+<th:block th:replace="modals :: modalz('editPelanggan')">modal</th:block>
+
+<script th:src="@{/assets/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/js/icons/feather-icon/feather.min.js}"></script>
+<script th:src="@{/assets/js/icons/feather-icon/feather-icon.js}"></script>
+<script th:src="@{/assets/js/scrollbar/simplebar.js}"></script>
+<script th:src="@{/assets/js/scrollbar/custom.js}"></script>
+<script th:src="@{/assets/js/config.js}"></script>
+<script th:src="@{/assets/js/sidebar-menu.js}"></script>
+<script th:src="@{/assets/js/chart/knob/knob.min.js}"></script>
+<script th:src="@{/assets/js/chart/knob/knob-chart.js}"></script>
+<script th:src="@{/assets/js/chart/apex-chart/apex-chart.js}"></script>
+<script th:src="@{/assets/js/chart/apex-chart/stock-prices.js}"></script>
+<script th:src="@{/assets/js/notify/bootstrap-notify.min.js}"></script>
+<script th:src="@{/assets/js/dashboard/default.js}"></script>
+<script th:src="@{/assets/js/datepicker/date-picker/datepicker.js}"></script>
+<script th:src="@{/assets/js/datepicker/date-picker/datepicker.en.js}"></script>
+<script th:src="@{/assets/js/datepicker/date-picker/datepicker.custom.js}"></script>
+<script th:src="@{/assets/js/photoswipe/photoswipe.min.js}"></script>
+<script th:src="@{/assets/js/photoswipe/photoswipe-ui-default.min.js}"></script>
+<script th:src="@{/assets/js/photoswipe/photoswipe.js}"></script>
+<script th:src="@{/assets/js/typeahead/handlebars.js}"></script>
+<script th:src="@{/assets/js/typeahead/typeahead.bundle.js}"></script>
+<script th:src="@{/assets/js/typeahead/typeahead.custom.js}"></script>
+<script th:src="@{/assets/js/typeahead-search/handlebars.js}"></script>
+<script th:src="@{/assets/js/typeahead-search/typeahead-custom.js}"></script>
+<script th:src="@{/assets/js/height-equal.js}"></script>
+<script th:src="@{/assets/js/script.js}"></script>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script><!--wajib ada untuk modals-->
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script><!--wajib ada untuk modals-->
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script><!--wajib ada untuk modals-->
+
+<script src="cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

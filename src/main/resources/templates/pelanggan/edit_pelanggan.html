@@ -1,0 +1,90 @@
+<form  th:action="@{/api/mgmnt/v1/pelanggan/edit/{id} (id=${pelanggan.idPelanggan})}"
+       th:object = "${pelanggan}" method="POST" id="ubahPelanggan"><!--	ID FORM TIDAK BOLEH SAMA DENGAN ID MODALS DI FRAGMENT -->
+    <input type="hidden" value="48c9171f7e9306d2d94d211c6a583e83" /><!-- form generate id security of front end -->
+    <div th:if="${#fields.hasErrors('global')}" class="error-box error-danger" >
+        <p th:each="err : ${#fields.errors('global')}" th:text="${err}"  class="error"/>
+    </div>
+    <div class ="form-group">
+        <label> Nama Lengkap </label>
+        <input
+                type = "text"
+                name = "namaLengkap"
+                th:field = "*{namaLengkap}"
+                class = "form-control"
+                placeholder="Masukkan Nama Lengkap"
+        />
+        <ul>
+            <li th:each="err : ${#fields.errors('namaLengkap')}" th:text="${err}" class="error" />
+        </ul>
+    </div>
+
+    </div>
+    <div class ="form-group">
+        <label> Alamat Lengkap </label>
+        <textarea
+                type = "text"
+                name = "alamatLengkap"
+                th:field = "*{alamatLengkap}"
+                class = "form-control"
+                placeholder="Masukkan Alamat Lengkap"
+                cols="4"
+                rows="4"
+        ></textarea>
+        <ul>
+            <li th:each="err : ${#fields.errors('alamatLengkap')}" th:text="${err}" class="error" />
+        </ul>
+    </div>
+
+    </div>
+    <div class ="form-group">
+        <label> No Handphone </label>
+        <input
+                type = "text"
+                name = "noHandphone"
+                th:field = "*{noHandphone}"
+                class = "form-control"
+                placeholder="Masukkan No Handphone"
+        />
+        <ul>
+            <li th:each="err : ${#fields.errors('noHandphone')}" th:text="${err}" class="error" />
+        </ul>
+    </div>
+
+    <div class = "modal-footer">
+        <button type="submit" class = "btn btn-primary">
+            Submit
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</form>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    $("#ubahPelanggan").submit(function(event) {
+          event.preventDefault(); //prevent default action
+          let post_url = $(this).attr("action"); //get form action url
+          let request_method = $(this).attr("method"); //get form GET/POST method
+          let form_data = $(this).serialize(); //Encode form elements for submission
+          $.ajax({
+              url: post_url,
+              type: request_method,
+              data: form_data
+            }).done(function(response) { //
+            let pattern = /a37b3cc8a55bd348cd9dc7507fa6572c/i;
+			let result = response.match(pattern);
+            if(result)
+            {
+				$("#server-results").html(response);
+            }
+            else
+            {
+				$('#editPelanggan').modal('hide');
+				confirm("DATA BERHASIL DIUBAH");
+                location.reload();
+            }
+
+            });
+        });
+
+/*]]>*/
+</script>
